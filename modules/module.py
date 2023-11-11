@@ -6,6 +6,7 @@ import json
 import math
 import os
 from dotenv import load_dotenv
+import argparse
 #Token
 load_dotenv('./.env')
 TOKEN = os.environ.get("API_TOKEN")
@@ -105,6 +106,8 @@ def df_status(df_pulls, base_url, key, owner, repo, commits, username, api_token
                                                                     api_token), axis=1)
     df_status = df_pulls[field_list]
     return df_status
+def filter_dataframe(df_status, lab_name):
+    df_status = df_status[df_status["lab_name"]] == lab_name
 def create_csv(df_status, field_sort, field_name):
     df_csv = df_status.sort_values(by=field_sort, ascending=False)
     df_csv.columns = field_name

@@ -2,6 +2,14 @@
 from modules import module
 import os
 from dotenv import load_dotenv
+import argparse
+
+def argument_parser():
+    parser = argparse.ArgumentParser(description= 'Pull requests Data Bootcamp' )
+    help_message ='Choose the lab of choice.' 
+    parser.add_argument('-l', '--lab', help=help_message, type=str)
+    args = parser.parse_args()
+    return args
 
 #Token
 load_dotenv('./.env')
@@ -67,5 +75,8 @@ field_name1 = ['Student Name',
 if "_name_" == '_main_':
     DF_PULLS = module.get_pulls(BASE_URL, KEY, OWNER, REPO, PULLS, SEARCH, STATE, USERNAME, API_TOKEN, field_list1)
     DF_STATUS = module.df_status(DF_PULLS, BASE_URL, KEY, OWNER, REPO, COMMITS, USERNAME, API_TOKEN, field_list2)
+    if argument_parser().lab:
+        DF_STATUS = module.filter_dataframe(DF_STATUS,argument_parser().lab)
+      
     DF_CSV = module.create_csv(DF_STATUS, field_sort1, field_name1)
-    DF_CSV
+        
